@@ -26,17 +26,8 @@ class CourseDetailSerializer(serializers.ModelSerializer):
         """Выводим количество уроков у курса по его идшнику"""
         return Lesson.objects.filter(course=course.id).count()
 
-
-    def get_lessons(self, course):
-        """Выводим уроки у курса по его идшнику"""
-        return Lesson.objects.filter(course=course.id)
-
     class Meta:
         model = Course
         fields = ('name', 'description', 'count_lessons', 'lessons')
 
-class PaymentSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Payment
-        fields = '__all__'
