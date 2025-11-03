@@ -11,6 +11,7 @@ from users.views import (
     CustomUserListAPIView,
     CustomUserUpdateAPIView,
     CustomUserDestroyAPIView,
+    CustomUserRetrieveAPIView,
 )
 from users.apps import UsersConfig
 
@@ -30,7 +31,7 @@ urlpatterns = [
         name="token_refresh",
     ),
     path("", CustomUserListAPIView.as_view(), name="user_list"),
-    # path("<int:pk>/", CustomUserRetrieveAPIView.as_view(), name="user_retrieve"),
+    path("<int:pk>/", CustomUserRetrieveAPIView.as_view(), name="user_retrieve"),
     path("delete/<int:pk>/", CustomUserDestroyAPIView.as_view(), name="user_delete"),
     path("update/<int:pk>/", CustomUserUpdateAPIView.as_view(), name="user_update"),
     path("payment/", PaymentListAPIView.as_view(), name="payment_list"),

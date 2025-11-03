@@ -14,7 +14,13 @@ class PaymentSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ("email", "id", "is_staff", "phone_number", "image", "city")
+        fields = "__all__"
+
+
+class ClassModerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ("email", "id")
 
 
 # class CustomUserDetailSerializer(serializers.ModelSerializer):

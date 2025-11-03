@@ -1,0 +1,98 @@
+[
+    {
+        "model": "materials.lesson",
+        "pk": 2,
+        "fields": {
+            "name": "Русский язык",
+            "description": "Деепричастный оборот",
+            "preview": null,
+            "video_url": null,
+            "course": 1,
+            "owner": null
+        }
+    },
+    {
+        "model": "materials.lesson",
+        "pk": 3,
+        "fields": {
+            "name": "Физкультура",
+            "description": "Прыжок через козла",
+            "preview": null,
+            "video_url": null,
+            "course": 1,
+            "owner": null
+        }
+    },
+    {
+        "model": "materials.lesson",
+        "pk": 4,
+        "fields": {
+            "name": "Тмм",
+            "description": "Машины и механизмы",
+            "preview": null,
+            "video_url": null,
+            "course": 3,
+            "owner": null
+        }
+    },
+    {
+        "model": "materials.lesson",
+        "pk": 5,
+        "fields": {
+            "name": "Горные породы",
+            "description": "Не камни",
+            "preview": null,
+            "video_url": null,
+            "course": 3,
+            "owner": null
+        }
+    },
+    {
+        "model": "materials.lesson",
+        "pk": 6,
+        "fields": {
+            "name": "Начерталка",
+            "description": "Пятерка",
+            "preview": null,
+            "video_url": null,
+            "course": 4,
+            "owner": null
+        }
+    },
+    {
+        "model": "materials.lesson",
+        "pk": 7,
+        "fields": {
+            "name": "Детали машин",
+            "description": "Жопа",
+            "preview": null,
+            "video_url": null,
+            "course": 4,
+            "owner": 4
+        }
+    },
+    {
+        "model": "materials.lesson",
+        "pk": 1,
+        "fields": {
+            "name": "Математика",
+            "description": "Царица науккк",
+            "preview": null,
+            "video_url": null,
+            "course": 1,
+            "owner": null
+        }
+    },
+    {
+        "model": "materials.lesson",
+        "pk": 8,
+        "fields": {
+            "name": "Растворы",
+            "description": "бентонит",
+            "preview": null,
+            "video_url": null,
+            "course": 4,
+            "owner": 9
+        }
+    }
+]

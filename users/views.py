@@ -1,9 +1,15 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import AllowAny
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from users.models import Payment, CustomUser
-from users.serializers import PaymentSerializer, CustomUserSerializer
+from users.permissions import IsOwner
+from users.serializers import (
+    PaymentSerializer,
+    CustomUserSerializer,
+    ClassModerSerializer,
+)
 from rest_framework.filters import OrderingFilter
 
 
@@ -19,26 +25,34 @@ class CustomUserCreateAPIView(generics.CreateAPIView):
 
 
 class CustomUserListAPIView(generics.ListAPIView):
-    serializer_class = CustomUserSerializer
+    serializer_class = ClassModerSerializer
+    permission_classes = [IsAuthenticated]
     queryset = CustomUser.objects.all()
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ("is_active",)
     ordering_fields = ("email",)
 
 
-# class CustomUserRetrieveAPIView(generics.RetrieveAPIView):
-#     serializer_class = CustomUserSerializer
-#     queryset = CustomUser.objects.all()
-#     filter_backends = [DjangoFilterBackend, OrderingFilter]
-#     filterset_fields = ('is_active',)
-#     ordering_fields = ('email',)
+class CustomUserRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = ClassModerSerializer
+
+    def get_serializer_class(self):
+        # Получаем объект пользователя
+        obj = self.get_object()
+        if self.request.user == obj:
+            return CustomUserSerializer  # полный сериализатор для владельца
+        return super().get_serializer_class()
+
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ("is_active",)
+    ordering_fields = ("email",)
 
 
 class CustomUserUpdateAPIView(generics.UpdateAPIView):
     serializer_class = CustomUserSerializer
     queryset = CustomUser.objects.all()
-
-    # permission_classes = [IsOwnerOrStaff]
 
 
 class CustomUserDestroyAPIView(generics.DestroyAPIView):

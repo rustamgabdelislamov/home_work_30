@@ -1,0 +1,42 @@
+[
+  {
+    "model": "materials.Course",
+    "pk": 3,
+    "fields": {
+      "name": "2 курс",
+      "preview": null,
+      "description": "тоже легко",
+      "owner": null
+    }
+  },
+  {
+    "model": "materials.Course",
+    "pk": 4,
+    "fields": {
+      "name": "3 курс",
+      "preview": null,
+      "description": "тяжеловато",
+      "owner": null
+    }
+  },
+  {
+    "model": "materials.Course",
+    "pk": 1,
+    "fields": {
+      "name": "1 курс",
+      "preview": null,
+      "description": "очень легко",
+      "owner": null
+    }
+  },
+  {
+    "model": "materials.Course",
+    "pk": 5,
+    "fields": {
+      "name": "Детали машин",
+      "preview": null,
+      "description": "Жопа",
+      "owner": 9
+    }
+  }
+]
