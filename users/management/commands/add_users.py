@@ -7,7 +7,6 @@ from users.models import CustomUser, Payment
 class Command(BaseCommand):
     help = "Create 3 sample users and 3 sample payments"
 
-
     def handle(self, *args, **options):
         users = []
 
@@ -35,9 +34,13 @@ class Command(BaseCommand):
         for user in users_data:
             user, created = CustomUser.objects.get_or_create(**user)
             if created:
-                self.stdout.write(self.style.SUCCESS(f'Successfully added user: {user.email}'))
+                self.stdout.write(
+                    self.style.SUCCESS(f"Successfully added user: {user.email}")
+                )
             else:
-                self.stdout.write(self.style.WARNING(f'User already exists: {user.email}'))
+                self.stdout.write(
+                    self.style.WARNING(f"User already exists: {user.email}")
+                )
             users.append(user)
 
         course = list(Course.objects.all()[:3])
@@ -62,12 +65,18 @@ class Command(BaseCommand):
                 "payment_course": course[2],
                 "amount": 300,
                 "payment_method": "cash",
-             },
+            },
         ]
 
         for payment in payments_data:
             payment, created = Payment.objects.get_or_create(**payment)
             if created:
-                self.stdout.write(self.style.SUCCESS(f'Successfully added book: {payment.payment_course}'))
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"Successfully added book: {payment.payment_course}"
+                    )
+                )
             else:
-                self.stdout.write(self.style.WARNING(f'Book already exists: {payment.payment_course}'))
+                self.stdout.write(
+                    self.style.WARNING(f"Book already exists: {payment.payment_course}")
+                )

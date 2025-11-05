@@ -1,10 +1,13 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets
-from rest_framework.filters import OrderingFilter
+from rest_framework.permissions import IsAuthenticated
 
 from materials.models import Course, Lesson
-from materials.serializers import CourseSerializer, LessonSerializer, CourseDetailSerializer, PaymentSerializer
-from users.models import Payment
+from materials.serializers import (
+    CourseSerializer,
+    LessonSerializer,
+    CourseDetailSerializer,
+)
+from users.permissions import IsModer, IsOwner
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -15,38 +18,58 @@ class CourseViewSet(viewsets.ModelViewSet):
             return CourseDetailSerializer
         return CourseSerializer
 
+    def perform_create(self, serializer):
+        course = serializer.save()
+        course.owner = self.request.user
+        course.save()
+
+    def get_permissions(self):
+        if self.action == "create":
+            self.permission_classes = (~IsModer,)
+        elif self.action in ["update", "retrieve"]:
+            self.permission_classes = (IsModer | IsOwner,)
+        elif self.action == "destroy":
+            self.permission_classes = (IsOwner,)
+        return super().get_permissions()
+
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
+    permission_classes = [IsAuthenticated, ~IsModer]
+
+    def perform_create(self, serializer):
+        lesson = serializer.save()
+        lesson.owner = self.request.user
+        lesson.save()
 
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
-    queryset = Lesson.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = Lesson.objects.all()
+        if not user.is_authenticated:
+            return Lesson.objects.none()
+        # проверка на группу "moders"
+        is_moder = user.groups.filter(name='moders').exists()
+        if user.is_staff or user.is_superuser or is_moder:
+            return qs
+        return qs.filter(owner=user)
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    permission_classes = [IsAuthenticated, IsModer | IsOwner]
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    permission_classes = [IsAuthenticated, IsModer | IsOwner]
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
-
-
-class PaymentListAPIView(generics.ListAPIView):
-    serializer_class = PaymentSerializer
-    queryset = Payment.objects.all()
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ('payment_course', 'payment_lesson', 'payment_method')
-    ordering_fields = ('date',)
-
-
-class PaymentDestroyAPIView(generics.DestroyAPIView):
-    queryset = Payment.objects.all()
-
+    permission_classes = [IsAuthenticated, IsOwner, ~IsModer]
