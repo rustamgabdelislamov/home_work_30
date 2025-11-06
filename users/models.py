@@ -91,7 +91,7 @@ class Subscribe(models.Model):
         related_name="subscribe",
         verbose_name="Пользователь",
     )
-    subscribe_course = models.ForeignKey(
+    course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
         related_name="subscribe_course",

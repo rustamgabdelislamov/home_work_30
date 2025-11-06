@@ -1,7 +1,7 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 
-from materials.serializers import LessonSerializer
-from users.models import Payment, CustomUser
+from users.models import Payment, CustomUser, Subscribe
 
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -23,18 +23,9 @@ class ClassModerSerializer(serializers.ModelSerializer):
         fields = ("email", "id")
 
 
-# class CustomUserDetailSerializer(serializers.ModelSerializer):
-#     lessons = LessonSerializer(many=True, read_only=True)
-#
-#     class Meta:
-#         model = CustomUser
-#         fields = ('email', 'lessons')
+class SubscribeSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Subscribe
+        fields = ('id', 'user', 'course')
 
-# class CustomUserIsOwnerDetailSerializer(serializers.ModelSerializer):
-#     lessons = LessonSerializer(many=True, read_only=True)
-#
-#
-#     class Meta:
-#         model = CustomUser
-#         fields = '__all__'

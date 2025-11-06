@@ -3,11 +3,16 @@ from rest_framework.fields import SerializerMethodField
 
 from materials.models import Course, Lesson
 from materials.validators import TitleLessonVideoUrlValidator
-from users.models import Payment
+from users.models import Subscribe
+from users.serializers import SubscribeSerializer
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    subscribe = SubscribeSerializer(many=True, read_only=True, source="subscribe_course")
 
+    def get_subscribe(self, user):
+        """Выводим подписки по id user"""
+        return Subscribe.objects.filter(user=user.id)
     class Meta:
         model = Course
         fields = "__all__"
