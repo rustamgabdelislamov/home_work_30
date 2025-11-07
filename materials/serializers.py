@@ -8,11 +8,14 @@ from users.serializers import SubscribeSerializer
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    subscribe = SubscribeSerializer(many=True, read_only=True, source="subscribe_course")
+    is_subscribed = SerializerMethodField()
 
-    def get_subscribe(self, user):
-        """Выводим подписки по id user"""
-        return Subscribe.objects.filter(user=user.id)
+    def get_is_subscribed(self, obj):
+        user = self.context["request"].user
+        if not user.is_authenticated:
+            return False
+        return Subscribe.objects.filter(user=user, course=obj).exists()
+
     class Meta:
         model = Course
         fields = "__all__"

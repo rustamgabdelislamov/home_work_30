@@ -161,3 +161,33 @@ class SubscribeTestCase(APITestCase):
         # Проверяем, что подписка удалена
         subscription_exists = Subscribe.objects.filter(user=self.user, course=self.course).exists()
         self.assertFalse(subscription_exists)
+
+    def test_subscribe_to_course_unauthenticated(self):
+        self.client.force_authenticate(user=None)  # разлогиниваем
+        data = {
+            "course": self.course.pk
+        }
+        response = self.client.post(self.url, data)
+
+        # Проверяем успешность операции
+        self.assertEqual(response.status_code, 401)
+
+
+        # Проверяем, что подписка не была создана
+        subscription_exists = Subscribe.objects.filter(user=self.user, course=self.course).exists()
+        self.assertFalse(subscription_exists)
+
+
+    def test_subscribe_to_course_error_course(self):
+        data = {
+            "course": 1000
+        }
+        response = self.client.post(self.url, data)
+
+        # Проверяем успешность операции
+        self.assertEqual(response.status_code, 404)
+
+
+        # Проверяем, что подписка не была создана
+        subscription_exists = Subscribe.objects.filter(user=self.user, course=self.course).exists()
+        self.assertFalse(subscription_exists)

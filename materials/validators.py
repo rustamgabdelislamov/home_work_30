@@ -13,3 +13,5 @@ class TitleLessonVideoUrlValidator:
     def __call__(self, value):
         if not bool(YOUTUBE_RE.match(value)):
             raise ValidationError('Ссылка на видео должна вести на Ютуб')
+
+    __fields__ = ("video_url",)
