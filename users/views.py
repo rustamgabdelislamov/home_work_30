@@ -1,10 +1,12 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.decorators import permission_classes
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from users.models import Payment, CustomUser
-from users.permissions import IsOwner
+from materials.models import Course
+from users.models import Payment, CustomUser, Subscribe
 from users.serializers import (
     PaymentSerializer,
     CustomUserSerializer,
@@ -69,3 +71,17 @@ class PaymentListAPIView(generics.ListAPIView):
 
 class PaymentDestroyAPIView(generics.DestroyAPIView):
     queryset = Payment.objects.all()
+
+
+class SubscribeAPIView(APIView):
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get("course")
+        course_item = get_object_or_404(Course, pk=course_id)
+        subs_item = Subscribe.objects.filter(user=user, course=course_item)
+        if subs_item.exists():
+            subs_item.delete()  # отписываем (удаляем все найденные)
+            return Response({"message": "отписано"})
+        else:
+            Subscribe.objects.create(user=user, course=course_item)  # подписываем
+            return Response({"message": "подписано"})

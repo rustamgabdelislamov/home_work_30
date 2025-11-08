@@ -121,6 +121,6 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),# поменяй когда будешь делать безопасный сайт
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
