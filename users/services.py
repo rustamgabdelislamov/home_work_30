@@ -7,7 +7,7 @@ def create_stripe_payment(amount):
 
     price = stripe.Price.create(
         currency="usd",
-        unit_amount=amount * 100,
+        unit_amount=int(amount),
         product_data={"name": "Payment"},
     )
     return price
@@ -16,7 +16,7 @@ def create_stripe_payment(amount):
 def create_stripe_session(price):
     """Создает сессию на оплату в stripe."""
     session = stripe.checkout.Session.create(
-        success_url="https://127.0.0.1:8000",
+        success_url="https://127.0.0.1:8000/",
         line_items=[{"price": price.get("id"), "quantity": 1}],
         mode="payment",
     )
