@@ -55,8 +55,7 @@ class Payment(models.Model):
         blank=True,
         null=True,
     )
-    date = models.DateField(auto_created=True, verbose_name="Дата оплаты", blank=True,
-        null=True,)
+    date = models.DateField(auto_now_add=True, verbose_name="Дата оплаты")
     payment_course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
