@@ -51,8 +51,10 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         related_name="user",
         verbose_name="Пользователь",
+        blank=True,
+        null=True,
     )
-    date = models.DateField(verbose_name="Дата оплаты")
+    date = models.DateField(auto_created=True, verbose_name="Дата оплаты")
     payment_course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -73,7 +75,8 @@ class Payment(models.Model):
         max_digits=10, decimal_places=2, verbose_name="Сумма оплаты"
     )
     payment_method = models.CharField(
-        max_length=12, choices=PAYMENT_METHOD_CHOICES, verbose_name="Способ оплаты"
+        max_length=12, choices=PAYMENT_METHOD_CHOICES, verbose_name="Способ оплаты",blank=True,
+        null=True,
     )
 
     def __str__(self):
