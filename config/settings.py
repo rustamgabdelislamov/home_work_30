@@ -63,6 +63,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST') # Или ваш SMTP-сервер
+EMAIL_PORT = os.getenv('EMAIL_PORT') # Или 465 для SSL
+EMAIL_USE_TLS = True         # Или EMAIL_USE_SSL = True для 465
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # Для Gmail используйте пароль приложения
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER') # Отправитель по умолчанию
+SERVER_EMAIL = os.getenv('EMAIL_HOST_USER') # Для ошибок сервера
+
 
 DATABASES = {
     "default": {
@@ -129,10 +138,10 @@ SIMPLE_JWT = {
 
 STRIPE_API_KEY=os.getenv("STRIPE_API_KEY")
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0' # Например, Redis, который по умолчанию работает на порту 6379
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL") # Например, Redis, который по умолчанию работает на порту 6379
 
 # URL-адрес брокера результатов, также Redis
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 
 # Часовой пояс для работы Celery
 CELERY_TIMEZONE = "UTC"
@@ -151,3 +160,4 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 #         'schedule': timedelta(seconds=10),  # Расписание выполнения задачи (например, каждые 10 минут)
 #     },
 # }
+
