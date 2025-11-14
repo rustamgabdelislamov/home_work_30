@@ -1,3 +1,5 @@
+from itertools import product
+
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import get_object_or_404
@@ -95,14 +97,10 @@ class PaymentCreateAPIView(generics.CreateAPIView):
 
 
     def perform_create(self, serializer):
-        print(f"User: {self.request.user}")  # Вывод текущего пользователя
-        print(f"Is Authenticated: {self.request.user.is_authenticated}")
         payment = serializer.save(user=self.request.user) # берем user
-        date = payment.date
         amount = payment.amount # создаем сумму
         price = create_stripe_payment(amount) # создаем стоимость
         session_id, link = create_stripe_session(price) # создаем сессию
         payment.session_id = session_id # сохраняем данные в поля модели
         payment.link = link  # сохраняем данные в поля модели
-        payment.date = date
         payment.save()
