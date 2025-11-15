@@ -7,7 +7,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.contrib.auth import authenticate, login
 from materials.models import Course
 from users.models import Payment, CustomUser, Subscribe
 from users.serializers import (
@@ -29,6 +29,12 @@ class CustomUserCreateAPIView(generics.CreateAPIView):
         user = serializer.save(is_active=True)
         user.set_password(user.password)
         user.save()
+        original_password = serializer.validated_data['password']
+        print(f"User created: {user.email}, Password (hashed): {user.password}")
+        user = authenticate(email=user.email, password=original_password)
+        print(f"Authenticated user: {user}")
+        if user is not None:
+            login(self.request, user)
 
 
 class CustomUserListAPIView(generics.ListAPIView):
@@ -60,6 +66,7 @@ class CustomUserRetrieveAPIView(generics.RetrieveAPIView):
 class CustomUserUpdateAPIView(generics.UpdateAPIView):
     serializer_class = CustomUserSerializer
     queryset = CustomUser.objects.all()
+
 
 
 class CustomUserDestroyAPIView(generics.DestroyAPIView):

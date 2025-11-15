@@ -57,7 +57,7 @@ class CourseViewSet(viewsets.ModelViewSet):
             course_id = getattr(instance, "id", None) # getattr(instance, "id", None) возвращает ID курса
             update_course_or_lesson.delay(course_id=course_id) # Если были внесены изменения, вызывается задача
             # update_course_or_lesson с ID курса.
-        print(course_id)
+
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
