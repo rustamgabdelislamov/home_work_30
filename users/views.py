@@ -17,7 +17,7 @@ from users.serializers import (
 )
 from rest_framework.filters import OrderingFilter
 
-from users.services import create_stripe_payment, create_stripe_session
+from users.services import create_stripe_payment, create_stripe_session, create_stripe_product
 
 
 class CustomUserCreateAPIView(generics.CreateAPIView):
@@ -120,6 +120,9 @@ class PaymentCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         payment = serializer.save(user=self.request.user) # берем user
+        # product = create_stripe_product(course_name=payment.payment_course)
+        # course_name = payment.payment_course
+        # print(course_name)
         amount = payment.amount # создаем сумму
         price = create_stripe_payment(amount) # создаем стоимость
         session_id, link = create_stripe_session(price) # создаем сессию

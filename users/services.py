@@ -3,11 +3,11 @@ from config.settings import STRIPE_API_KEY
 stripe.api_key = STRIPE_API_KEY
 
 
-def create_stripe_product(course):
-    """Создает продукт в stripe"""
-
-    product = stripe.Product.create(name=f'{course.name}')
-    return product
+# def create_stripe_product(course_name):
+#     """Создает продукт в stripe"""
+#
+#     product = stripe.Product.create(name=course_name)
+#     return product
 
 
 def create_stripe_payment(amount):
