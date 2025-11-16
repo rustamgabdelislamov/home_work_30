@@ -191,3 +191,4 @@ class SubscribeTestCase(APITestCase):
         # Проверяем, что подписка не была создана
         subscription_exists = Subscribe.objects.filter(user=self.user, course=self.course).exists()
         self.assertFalse(subscription_exists)
+

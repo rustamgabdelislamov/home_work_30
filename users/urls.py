@@ -11,7 +11,7 @@ from users.views import (
     CustomUserListAPIView,
     CustomUserUpdateAPIView,
     CustomUserDestroyAPIView,
-    CustomUserRetrieveAPIView, SubscribeAPIView,
+    CustomUserRetrieveAPIView, SubscribeAPIView, PaymentCreateAPIView,
 )
 from users.apps import UsersConfig
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path("delete/<int:pk>/", CustomUserDestroyAPIView.as_view(), name="user_delete"),
     path("update/<int:pk>/", CustomUserUpdateAPIView.as_view(), name="user_update"),
 
+    path("payment/create/", PaymentCreateAPIView.as_view(), name="payment_create"),
     path("payment/", PaymentListAPIView.as_view(), name="payment_list"),
     path("payment/delete/<int:pk>/", PaymentDestroyAPIView.as_view(), name="payment_delete"),
 
