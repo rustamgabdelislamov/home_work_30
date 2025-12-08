@@ -35,4 +35,3 @@ isort = "^7.0.0"
 
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.2.1"
-

@@ -17,7 +17,7 @@ from users.serializers import (
 )
 from rest_framework.filters import OrderingFilter
 
-from users.services import create_stripe_payment, create_stripe_session, create_stripe_product
+from users.services import create_stripe_payment, create_stripe_session
 
 
 class CustomUserCreateAPIView(generics.CreateAPIView):
@@ -30,9 +30,9 @@ class CustomUserCreateAPIView(generics.CreateAPIView):
         user.set_password(user.password)
         user.save()
         original_password = serializer.validated_data['password']
-        print(f"User created: {user.email}, Password (hashed): {user.password}")
+        # print(f"User created: {user.email}, Password (hashed): {user.password}")
         user = authenticate(email=user.email, password=original_password)
-        print(f"Authenticated user: {user}")
+        # print(f"Authenticated user: {user}")
         if user is not None:
             login(self.request, user)
 
