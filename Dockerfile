@@ -19,7 +19,7 @@ RUN pip install poetry
 
 # Устанавливаем зависимости проекта без создания виртуального окружения
 RUN poetry config virtualenvs.create false
-RUN poetry install --without dev --no-root -v
+RUN poetry install --no-root -v
 
 # Копируем остальные файлы проекта в контейнер
 COPY . .
@@ -31,4 +31,4 @@ RUN mkdir -p /docker/media
 EXPOSE 8000
 
 # Определяем команду для запуска приложения
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver"]
