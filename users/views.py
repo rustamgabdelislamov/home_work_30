@@ -30,9 +30,9 @@ class CustomUserCreateAPIView(generics.CreateAPIView):
         user.set_password(user.password)
         user.save()
         original_password = serializer.validated_data['password']
-        print(f"User created: {user.email}, Password (hashed): {user.password}")
+        # print(f"User created: {user.email}, Password (hashed): {user.password}")
         user = authenticate(email=user.email, password=original_password)
-        print(f"Authenticated user: {user}")
+        # print(f"Authenticated user: {user}")
         if user is not None:
             login(self.request, user)
 
@@ -120,11 +120,11 @@ class PaymentCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         payment = serializer.save(user=self.request.user) # берем user
-        # product = create_stripe_product(course_name=payment.payment_course)
-        # course_name = payment.payment_course
-        # print(course_name)
+        product = create_stripe_product(course_name=payment.payment_course.name) # (course_name=payment.payment_course.amount) чтобы вытащить поле амоунт
+        course_name = payment.payment_course
+        print(course_name)
         amount = payment.amount # создаем сумму
-        price = create_stripe_payment(amount) # создаем стоимость
+        price = create_stripe_payment(amount,course_name) # создаем стоимость
         session_id, link = create_stripe_session(price) # создаем сессию
         payment.session_id = session_id # сохраняем данные в поля модели
         payment.link = link  # сохраняем данные в поля модели
