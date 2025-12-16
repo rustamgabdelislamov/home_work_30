@@ -29,3 +29,5 @@ RUN mkdir -p /app/media
 
 # Открываем порт 8000 для взаимодействия с приложением
 EXPOSE 8000
+
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
