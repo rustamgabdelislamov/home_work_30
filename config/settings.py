@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from django.conf.global_settings import STATIC_ROOT
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -111,7 +112,8 @@ USE_TZ = True
 
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [os.path.join(BASE_DIR / "static")]
+STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

@@ -2,7 +2,7 @@
 FROM python:3.12
 
 # Устанавливаем рабочую директорию в контейнере
-WORKDIR /docker
+WORKDIR /app
 
 # Устанавливаем зависимости системы
 RUN apt-get update && apt-get install -y \
