@@ -16,7 +16,7 @@ COPY pyproject.toml poetry.lock* ./
 
 # Устанавливаем Poetry
 RUN pip install poetry
-
+RUN pip install gunicorn
 # Устанавливаем зависимости проекта без создания виртуального окружения
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-root -v
