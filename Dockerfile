@@ -25,7 +25,7 @@ RUN poetry install --no-root -v
 COPY . .
 
 # Создаем директорию для медиафайлов
-RUN mkdir -p /docker/media
+RUN mkdir -p /app/media
 
 # Открываем порт 8000 для взаимодействия с приложением
 EXPOSE 8000
