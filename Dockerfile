@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+
 # Копируем файл pyproject.toml и poetry.lock, если он есть
 COPY pyproject.toml poetry.lock* ./
 
@@ -20,7 +21,7 @@ RUN pip install gunicorn
 # Устанавливаем зависимости проекта без создания виртуального окружения
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-root -v
-
+RUN gunicorn --version
 # Копируем остальные файлы проекта в контейнер
 COPY . .
 
