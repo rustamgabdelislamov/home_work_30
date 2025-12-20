@@ -44,6 +44,12 @@ jobs:
           poetry config virtualenvs.create false
           poetry install --no-root -v
 
+      - name: Run application
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          run: |
+            echo "Running with SECRET_KEY"
+
       - name: Run tests
         run: python manage.py test
 
