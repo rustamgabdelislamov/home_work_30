@@ -4,7 +4,6 @@ from rest_framework.fields import SerializerMethodField
 from materials.models import Course, Lesson
 from materials.validators import TitleLessonVideoUrlValidator
 from users.models import Subscribe
-from users.serializers import SubscribeSerializer
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -22,7 +21,13 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
-    video_url = serializers.CharField(required=False, allow_blank=True, allow_null=True, validators=[TitleLessonVideoUrlValidator(field="video_url")])
+    video_url = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        allow_null=True,
+        validators=[TitleLessonVideoUrlValidator(field="video_url")],
+    )
+
     class Meta:
         model = Lesson
         fields = "__all__"
@@ -39,4 +44,3 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ("name", "description", "count_lessons", "lessons")
-

@@ -1,8 +1,5 @@
-from itertools import product
-
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -17,7 +14,11 @@ from users.serializers import (
 )
 from rest_framework.filters import OrderingFilter
 
-from users.services import create_stripe_payment, create_stripe_session, create_stripe_product
+from users.services import (
+    create_stripe_payment,
+    create_stripe_session,
+    create_stripe_product,
+)
 
 
 class CustomUserCreateAPIView(generics.CreateAPIView):
@@ -29,7 +30,7 @@ class CustomUserCreateAPIView(generics.CreateAPIView):
         user = serializer.save(is_active=True)
         user.set_password(user.password)
         user.save()
-        original_password = serializer.validated_data['password']
+        original_password = serializer.validated_data["password"]
         # print(f"User created: {user.email}, Password (hashed): {user.password}")
         user = authenticate(email=user.email, password=original_password)
         # print(f"Authenticated user: {user}")
@@ -68,7 +69,6 @@ class CustomUserUpdateAPIView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
 
 
-
 class CustomUserDestroyAPIView(generics.DestroyAPIView):
     queryset = CustomUser.objects.all()
 
@@ -104,7 +104,7 @@ class SubscribeAPIView(APIView):
         # subs_item — ленивый QuerySet (может содержать 0, 1 или несколько объектов).
 
         if subs_item.exists():
-            #Проверяем, есть ли в queryset какие-либо записи. .exists() выполняет запрос к базе и
+            # Проверяем, есть ли в queryset какие-либо записи. .exists() выполняет запрос к базе и
             # возвращает True, если найден хотя бы один объект.
             subs_item.delete()  # отписываем (удаляем все найденные)
             return Response({"message": "отписано"})
@@ -117,15 +117,16 @@ class PaymentCreateAPIView(generics.CreateAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
 
-
     def perform_create(self, serializer):
-        payment = serializer.save(user=self.request.user) # берем user
-        product = create_stripe_product(course_name=payment.payment_course.name) # (course_name=payment.payment_course.amount) чтобы вытащить поле амоунт
+        payment = serializer.save(user=self.request.user)  # берем user
+        product = create_stripe_product(
+            course_name=payment.payment_course.name
+        )  # (course_name=payment.payment_course.amount) чтобы вытащить поле амоунт
         course_name = payment.payment_course
-        print(course_name)
-        amount = payment.amount # создаем сумму
-        price = create_stripe_payment(amount,course_name) # создаем стоимость
-        session_id, link = create_stripe_session(price) # создаем сессию
-        payment.session_id = session_id # сохраняем данные в поля модели
+        print(product)
+        amount = payment.amount  # создаем сумму
+        price = create_stripe_payment(amount, course_name)  # создаем стоимость
+        session_id, link = create_stripe_session(price)  # создаем сессию
+        payment.session_id = session_id  # сохраняем данные в поля модели
         payment.link = link  # сохраняем данные в поля модели
         payment.save()

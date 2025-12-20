@@ -11,7 +11,9 @@ from users.views import (
     CustomUserListAPIView,
     CustomUserUpdateAPIView,
     CustomUserDestroyAPIView,
-    CustomUserRetrieveAPIView, SubscribeAPIView, PaymentCreateAPIView,
+    CustomUserRetrieveAPIView,
+    SubscribeAPIView,
+    PaymentCreateAPIView,
 )
 from users.apps import UsersConfig
 
@@ -20,18 +22,26 @@ app_name = UsersConfig.name
 
 urlpatterns = [
     path("register/", CustomUserCreateAPIView.as_view(), name="register"),
-    path("login/", TokenObtainPairView.as_view(permission_classes=(AllowAny,)), name="login"),
-    path("token/refresh/", TokenRefreshView.as_view(permission_classes=(AllowAny,)), name="token_refresh"),
-
+    path(
+        "login/",
+        TokenObtainPairView.as_view(permission_classes=(AllowAny,)),
+        name="login",
+    ),
+    path(
+        "token/refresh/",
+        TokenRefreshView.as_view(permission_classes=(AllowAny,)),
+        name="token_refresh",
+    ),
     path("", CustomUserListAPIView.as_view(), name="user_list"),
     path("<int:pk>/", CustomUserRetrieveAPIView.as_view(), name="user_retrieve"),
     path("delete/<int:pk>/", CustomUserDestroyAPIView.as_view(), name="user_delete"),
     path("update/<int:pk>/", CustomUserUpdateAPIView.as_view(), name="user_update"),
-
     path("payment/create/", PaymentCreateAPIView.as_view(), name="payment_create"),
     path("payment/", PaymentListAPIView.as_view(), name="payment_list"),
-    path("payment/delete/<int:pk>/", PaymentDestroyAPIView.as_view(), name="payment_delete"),
-
-    path("subscribe/", SubscribeAPIView.as_view(), name="subscribe")
-
+    path(
+        "payment/delete/<int:pk>/",
+        PaymentDestroyAPIView.as_view(),
+        name="payment_delete",
+    ),
+    path("subscribe/", SubscribeAPIView.as_view(), name="subscribe"),
 ]

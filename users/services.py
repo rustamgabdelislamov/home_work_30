@@ -1,5 +1,6 @@
 import stripe
 from config.settings import STRIPE_API_KEY
+
 stripe.api_key = STRIPE_API_KEY
 
 
@@ -10,7 +11,7 @@ def create_stripe_product(course_name):
     return product
 
 
-def create_stripe_payment(amount,product_name):
+def create_stripe_payment(amount, product_name):
     """Создает цену в stripe."""
 
     price = stripe.Price.create(

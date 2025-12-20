@@ -1,8 +1,5 @@
-
 from rest_framework import generics, viewsets
-from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 from materials.models import Course, Lesson
 from materials.paginators import MaterialsPaginator
@@ -11,7 +8,7 @@ from materials.serializers import (
     LessonSerializer,
     CourseDetailSerializer,
 )
-from users.models import Subscribe
+
 from users.permissions import IsModer, IsOwner
 from users.tasks import update_course_or_lesson
 
@@ -40,22 +37,35 @@ class CourseViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     def perform_update(self, serializer):
-        instance = serializer.instance # serializer.instance возвращает текущий экземпляр объекта, который будет обновлён
-        changed = False # флаг
+        instance = (
+            serializer.instance
+        )  # serializer.instance возвращает текущий экземпляр объекта, который будет обновлён
+        changed = False  # флаг
         # print(instance.__dict__)
 
-        for attr, new_value in serializer.validated_data.items(): # serializer.validated_data содержит данные,
+        for (
+            attr,
+            new_value,
+        ) in (
+            serializer.validated_data.items()
+        ):  # serializer.validated_data содержит данные,
             # которые были отправлены в запросе и проверены сериализатором. Цикл проходит по каждому атрибуту и
             # новому значению
             old_value = getattr(instance, attr, None)
 
-            if old_value != new_value: #  возвращает текущее значение атрибута объекта. Если атрибут не существует, # возвращается None
-                changed =True
+            if (
+                old_value != new_value
+            ):  # возвращает текущее значение атрибута объекта. Если атрибут не существует, # возвращается None
+                changed = True
                 break
-        instance = serializer.save() # сохраняет обновлённые данные в базе данных
-        if changed :
-            course_id = getattr(instance, "id", None) # getattr(instance, "id", None) возвращает ID курса
-            update_course_or_lesson.delay(course_id=course_id) # Если были внесены изменения, вызывается задача
+        instance = serializer.save()  # сохраняет обновлённые данные в базе данных
+        if changed:
+            course_id = getattr(
+                instance, "id", None
+            )  # getattr(instance, "id", None) возвращает ID курса
+            update_course_or_lesson.delay(
+                course_id=course_id
+            )  # Если были внесены изменения, вызывается задача
             # update_course_or_lesson с ID курса.
 
 
@@ -79,7 +89,7 @@ class LessonListAPIView(generics.ListAPIView):
         if not user.is_authenticated:
             return Lesson.objects.none()
         # проверка на группу "moders"
-        is_moder = user.groups.filter(name='moders').exists()
+        is_moder = user.groups.filter(name="moders").exists()
         if user.is_staff or user.is_superuser or is_moder:
             return qs
         return qs.filter(owner=user)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.fields import SerializerMethodField
+
 
 from users.models import Payment, CustomUser, Subscribe
 
@@ -27,6 +27,4 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscribe
-        fields = ('id', 'user', 'course')
-
-
+        fields = ("id", "user", "course")
