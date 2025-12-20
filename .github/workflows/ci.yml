@@ -16,7 +16,7 @@ jobs:
 
       - name: Install flake8
         run: |
-          python -m install --upgrade pip
+          python -m pip install --upgrade pip
           poetry add flake8
 
       - name: Run flake8
