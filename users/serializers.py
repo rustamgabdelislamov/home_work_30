@@ -28,4 +28,3 @@ class SubscribeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscribe
         fields = ("id", "user", "course")
-
