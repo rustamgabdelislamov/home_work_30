@@ -1,16 +1,22 @@
-### Запуск проекта
+### Запуск сервера
 
-1. Установите Docker и Docker Compose, если они ещё не установлены.
-2. В терминале, перейдите в директорию проекта.
-3. Запустите команду:
+1. Установите Poetry 
+pip install poetry
+2. Войдите в виртуальное окружение
+poetry shell
+3. Установите зависимости
+poetry install
+4. Клонируйте репозиторий git clone git@github.com:rustamgabdelislamov/home_work_30.git
+5. Сгенерируй SSH ключ и загрузи его в SSH keys , также сгенерируй SSH ключ для nginx на сервере
+ssh-keygen -t ed25519 -C "your@email"
+6. Создайте в секретах  на GIT HUB 
+DEPLOY_DIR
+DOCKER_HUB_ACCESS_TOKEN
+DOCKER_HUB_USERNAME
+SECRET_KEY
+SERVER_IP
+SSH_KEY
+SSH_USER
+7.Сделайте commit и push в репозиторий и сервер развернется сам
 
-docker-compose up
 
-
-### Проверка работоспособности
-
-- **Бэкенд**: Откройте браузер и перейдите по адресу http://localhost:8000.
-- **PostgreSQL**: Подключитесь к базе данных через pgAdmin или другой клиент.
-- **Redis**: Введите `redis-cli` в командной строке для проверки подключения. Далее напишите ping, должен вернуться PONG
-- **Celery** и **Celery Beat**: Проверьте логи в терминале docker-compose logs, чтобы убедиться, 
-  что задачи выполняются без ошибок.
