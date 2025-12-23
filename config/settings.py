@@ -184,3 +184,8 @@ if "test" in sys.argv:
             "NAME": BASE_DIR / "test_db.sqlite3",
         }
     }
+CSRF_TRUSTED_ORIGINS = [
+    'http://158.160.214.149',
+    # добавьте другие доверенные источники, если необходимо
+]
+
