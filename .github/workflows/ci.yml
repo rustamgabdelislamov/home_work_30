@@ -100,6 +100,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR }}
+            sudo docker stop myapp || true
+            sudo docker rm myapp || true
             sudo docker-compose pull
             sudo docker-compose down
             sudo docker container rm $(docker ps -a -q)
