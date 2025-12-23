@@ -31,11 +31,13 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "users",
     "materials",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -186,5 +188,11 @@ if "test" in sys.argv:
     }
 CSRF_TRUSTED_ORIGINS = [
     'http://158.160.214.149',
+    'https://158.160.214.149',
     # добавьте другие доверенные источники, если необходимо
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://158.160.214.149',
+    'https://158.160.214.149',
 ]
