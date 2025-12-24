@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
@@ -193,6 +193,11 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'http://158.160.214.149',
+    'https://158.160.214.149',
+]
+
+CSRF_ALLOWED_ORIGINS = [
     'http://158.160.214.149',
     'https://158.160.214.149',
 ]
