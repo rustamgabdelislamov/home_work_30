@@ -31,11 +31,13 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "users",
     "materials",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -72,6 +74,14 @@ EMAIL_HOST_PASSWORD = os.getenv(
 )  # Для Gmail используйте пароль приложения
 DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")  # Отправитель по умолчанию
 SERVER_EMAIL = os.getenv("EMAIL_HOST_USER")  # Для ошибок сервера
+
+
+# DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": BASE_DIR / "test_db.sqlite3",
+#         }
+#     }
 
 
 DATABASES = {
@@ -176,3 +186,18 @@ if "test" in sys.argv:
             "NAME": BASE_DIR / "test_db.sqlite3",
         }
     }
+CSRF_TRUSTED_ORIGINS = [
+    'http://158.160.214.149',
+    'https://158.160.214.149',
+    # добавьте другие доверенные источники, если необходимо
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://158.160.214.149',
+    'https://158.160.214.149',
+]
+
+CSRF_ALLOWED_ORIGINS = [
+    'http://158.160.214.149',
+    'https://158.160.214.149',
+]
